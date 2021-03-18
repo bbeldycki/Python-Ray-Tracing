@@ -1,0 +1,6 @@
+mypython/
+__pycache__/
+dexter_code
+*~.pyc
+*~
+.idea
