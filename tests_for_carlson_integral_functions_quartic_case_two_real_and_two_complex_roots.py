@@ -6,30 +6,30 @@ import time
 def carlson_intermediate_values_quartic_case() -> list:
     # Function which return a list of some intermediate values for given input
     # a1 = 0,3. a4 = 0.9, a5 = 0.4, b1 = 0.2, b4 = -0.3, b5 = 0.5, f = 0.4, g = -0.2, h = 0.1, x = 2.0, y = 0.5
-    m2 = 0.62249271  # index 0
-    lm2 = 0.54993185  # index 1
-    lp2 = 0.74305357  # index 2
-    wp2 = -0.54216139  # index 3
-    u2 = 0.16410988  # index 4
-    w2 = -0.13717583  # index 5
-    m2prho = 0.92172730  # index 6
+    m2 = 0.62249271     # index 0
+    lm2 = 0.54993185    # index 1
+    lp2 = 0.74305357    # index 2
+    wp2 = -0.54216139   # index 3
+    u2 = 0.16410988     # index 4
+    w2 = -0.13717583    # index 5
+    m2prho = 0.92172730     # index 6
     w12 = 0.21960988    # index 7
     rcu2w2 = 1.7237432  # index 8
-    rcp2q2 = 0.98880184  # index 9
-    rcu2w12 = 2.2358652  # index 10
+    rcp2q2 = 0.98880184     # index 9
+    rcu2w12 = 2.2358652     # index 10
     rcp12q12 = 1.16864877   # index 11
     rfm2lm2lp2 = 1.2543726  # index 12
     rdm2lm2lp2 = 1.7960842  # index 13
-    rjm2lm2lp2wp2 = -0.99822609  # index 14
+    rjm2lm2lp2wp2 = -0.99822609     # index 14
     rjm2lm2lp2m2prho = 1.5689637    # index 15
-    i1 = 5.0174903  # index 16
-    i2 = 5.8882786  # index 17
-    i3 = 2.7228427  # index 18
-    i3p = 2.7668674  # index 19
-    a111m1 = 0.54975858  # index 20
-    a111m1m2 = 0.04955294  # index 21
-    am111m1 = 0.33929812  # index 22
-    a111m3 = 2.6651950  # index 23
+    i1 = 5.0174903      # index 16
+    i2 = 5.8882786      # index 17
+    i3 = 2.7228427      # index 18
+    i3p = 2.7668674     # index 19
+    a111m1 = 0.54975858     # index 20
+    a111m1m2 = 0.04955294   # index 21
+    am111m1 = 0.33929812    # index 22
+    a111m3 = 2.6651950      # index 23
     result_list = [m2, lm2, lp2, wp2, u2, w2, m2prho, w12, rcu2w2, rcp2q2, rcu2w12, rcp12q12, rfm2lm2lp2, rdm2lm2lp2,
                    rjm2lm2lp2wp2, rjm2lm2lp2m2prho, i1, i2, i3, i3p, a111m1, a111m1m2, am111m1, a111m3]
     return result_list
@@ -49,6 +49,7 @@ def comparison_result_lists(list1: list, list2: list, eps: float) -> bool:
 
 
 def compute_cij_value(a: list, b: list, fgh: list, k: int, k1: int) -> float:
+    # Function which computes coefficients cij
     return 2 * b[k] * b[k1] * fgh[0] - fgh[1] * (a[k] * b[k1] + a[k1] * b[k]) + 2 * fgh[2] * a[k] * a[k1]
 
 
@@ -57,18 +58,18 @@ def quartic_cases_test_data() -> tuple:
     b_list = [0.2, 0.0, 0.0, -0.3, 0.5]
     # a_list = [0.3, 0.0, 0.0, 0.9, 1.0]
     # b_list = [0.2, 0.0, 0.0, -0.3, 0.0]
-    kwadrat_list = [0.4, -0.2, 0.1]
+    fgh_list = [0.4, -0.2, 0.1]
     y_val = 0.5
     x_val = 2.0
     p_list = [[-1, -1, -1, 0, 0], [1, 1, 1, -1, 0], [1, 1, 1, -1, -2], [-1, 1, 1, -1, 0], [1, 1, 1, -3, 0]]
     # p_list is a list of lists
     # zero could be skipped but I will leave it to make sure every list has the same length
     # by default we will use p_list[0] = [ -1, -1, -1, 0, 0]
-    # [1, 1, 1, -1, 0]  index 1
-    # [1, 1, 1, -1, -2] index 2
-    # [-1, 1, 1, -1, 0]    index 3
-    # [1, 1, 1, -3, 0]    index 4
-    return p_list, a_list, b_list, kwadrat_list, y_val, x_val
+    # [1, 1, 1, -1, 0]      index 1
+    # [1, 1, 1, -1, -2]     index 2
+    # [-1, 1, 1, -1, 0]     index 3
+    # [1, 1, 1, -3, 0]      index 4
+    return p_list, a_list, b_list, fgh_list, y_val, x_val
 
 
 def test_integrals_quartic_case_a_p1_pn(p: list, a: list, b: list, fgh: list, y: float, x: float) -> float:

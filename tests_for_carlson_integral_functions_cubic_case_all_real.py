@@ -6,30 +6,30 @@ import time
 def carlson_intermediate_values_cubic_case() -> list:
     # Function which return a list of some intermediate values for given input
     # ai = 0.1 + 0.2i, bi = 0.5 - 0.2i (1<=i<=4), x = 2.0, y = 0.5
-    u12 = 0.41309998  # index 0
-    u22 = 0.40109998  # index 1
-    u32 = 0.43709998  # index 2
-    w22 = 0.38909998  # index 3
-    q22 = 0.21616665  # index 4
-    p22 = 0.24016665  # index 5
-    rcp22q22 = 2.1128946  # index 6
-    rfu32u22u12 = 1.5486858  # index 7
-    rdu32u22u12 = 3.7353179  # index 8
+    u12 = 0.41309998    # index 0
+    u22 = 0.40109998    # index 1
+    u32 = 0.43709998    # index 2
+    w22 = 0.38909998    # index 3
+    q22 = 0.21616665    # index 4
+    p22 = 0.24016665    # index 5
+    rcp22q22 = 2.1128946    # index 6
+    rfu32u22u12 = 1.5486858     # index 7
+    rdu32u22u12 = 3.7353179     # index 8
     rju32u22u12w22 = 3.8709720  # index 9
-    i1c = 3.0973715  # index 10
-    i2c = 2.0520132  # index 11
-    i3c = 4.2877248  # index 12
-    j1c = -0.00688951  # index 13
-    j2c = -0.80566308  # index 14
-    k2c = 0.78110328  # index 15
-    a111 = 0.16015635  # index 16
+    i1c = 3.0973715     # index 10
+    i2c = 2.0520132     # index 11
+    i3c = 4.2877248     # index 12
+    j1c = -0.00688951   # index 13
+    j2c = -0.80566308   # index 14
+    k2c = 0.78110328    # index 15
+    a111 = 0.16015635   # index 16
     a11m1 = 0.50543220  # index 17
-    a1m1m1 = 0.48163106  # index 18
-    am11m1 = -0.12403646  # index 19
-    a11m3 = 1.2956636  # index 20
-    a311 = 0.32463223  # index 21
+    a1m1m1 = 0.48163106     # index 18
+    am11m1 = -0.12403646    # index 19
+    a11m3 = 1.2956636   # index 20
+    a311 = 0.32463223   # index 21
     a111m2 = 1.3360390  # index 22
-    a11m1m2 = 2.9189040  # index 23
+    a11m1m2 = 2.9189040     # index 23
     result_list = [u12, u22, u32, w22, q22, p22, rcp22q22, rfu32u22u12, rdu32u22u12, rju32u22u12w22, i1c, i2c, i3c,
                    j1c, j2c, k2c, a111, a11m1, a1m1m1, am11m1, a11m3, a311, a111m2, a11m1m2]
     return result_list
@@ -58,13 +58,13 @@ def cubic_cases_test_data() -> tuple:
     # p_list is a list of lists
     # zero could be skipped but I will leave it to make sure every list has the same length
     # by default we will use p_list[0] = [ -1, -1, -1, 0]
-    # [1, 1, 1, 0]  index 1
-    # [1, 1, -1, 0] index 2
+    # [1, 1, 1, 0]      index 1
+    # [1, 1, -1, 0]     index 2
     # [1, -1, -1, 0]    index 3
     # [-1, 1, -1, 0]    index 4
-    # [1, 1, -3, 0]  index 5
-    # [3, 1, 1, 0]  index 6
-    # [1, 1, 1, -2] index 7
+    # [1, 1, -3, 0]     index 5
+    # [3, 1, 1, 0]      index 6
+    # [1, 1, 1, -2]     index 7
     # [1, 1, -1, -2]    index 8
     return p_list, a_list, b_list, y_val, x_val
 

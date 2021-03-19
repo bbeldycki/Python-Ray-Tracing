@@ -6,32 +6,32 @@ import time
 def carlson_intermediate_values_quartic_case() -> list:
     # Function which return a list of some intermediate values for given input
     # ai = 0.1 + 0.2i, bi = 0.5 - 0.2i (1<=i<=4), x = 2.0, y = 0.5
-    u12 = 0.24791575  # index 0
-    u13 = 0.20471575  # index 1
-    u14 = 0.19031575  # index 2
-    w22 = -0.35688425  # index 3
+    u12 = 0.24791575    # index 0
+    u13 = 0.20471575    # index 1
+    u14 = 0.19031575    # index 2
+    w22 = -0.35688425   # index 3
     w122 = 0.21911575   # index 4
-    q22 = -3.20755523  # index 5
+    q22 = -3.20755523   # index 5
     q122 = 0.54102655   # index 6
-    p22 = 3.0168477  # index 7
+    p22 = 3.0168477     # index 7
     p122 = 0.55102655   # index 8
-    rcp22q22 = 0.34465425  # index 9
+    rcp22q22 = 0.34465425   # index 9
     rcp122q122 = 1.3553823  # index 10
-    rfu12u13u14 = 2.1642326  # index 11
-    rdu12u13u14 = 10.860876  # index 12
-    rju12u13u14w22 = -6.4342997  # index 13
-    rju12u13u14w122 = 9.9863171  # index 14
-    i1 = 4.3284652  # index 15
-    i2 = 6.3592902  # index 16
-    i3 = 1.4305398  # index 17
+    rfu12u13u14 = 2.1642326     # index 11
+    rdu12u13u14 = 10.860876     # index 12
+    rju12u13u14w22 = -6.4342997     # index 13
+    rju12u13u14w122 = 9.9863171     # index 14
+    i1 = 4.3284652      # index 15
+    i2 = 6.3592902      # index 16
+    i3 = 1.4305398      # index 17
     i3p = 2.9408494     # index 18
-    a111m1 = 0.56155363  # index 19
-    a1111 = -0.039947562  # index 20
-    a111m3 = 2.7981283  # index 21
-    a11m1m1 = 1.3368648  # index 22
-    a111m1m2 = 0.0096998758  # index 23
-    a1111m2 = -0.15740823  # index 24
-    a3111 = 0.12035743  # index 25
+    a111m1 = 0.56155363     # index 19
+    a1111 = -0.039947562    # index 20
+    a111m3 = 2.7981283      # index 21
+    a11m1m1 = 1.3368648     # index 22
+    a111m1m2 = 0.0096998758     # index 23
+    a1111m2 = -0.15740823   # index 24
+    a3111 = 0.12035743      # index 25
     result_list = [u12, u13, u14, w22, w122, q22, q122, p22, p122, rcp22q22, rcp122q122, rfu12u13u14, rdu12u13u14,
                    rju12u13u14w22, rju12u13u14w122, i1, i2, i3, i3p, a111m1, a1111, a111m3, a11m1m1, a111m1m2,
                    a1111m2, a3111]
@@ -61,13 +61,13 @@ def quartic_all_real_cases_test_data() -> tuple:
     # p_list is a list of lists
     # zero could be skipped but I will leave it to make sure every list has the same length
     # by default we will use p_list[0] = [ -1, -1, -1, -1, 0]
-    # [1, 1, 1, -1, 0]  index 1
-    # [1, 1, 1, 1, 0] index 2
-    # [1, 1, 1, -3, 0]    index 3
-    # [1, 1, -1, -1, 0]    index 4
-    # [1, 1, 1, -1, -2]  index 5
-    # [1, 1, 1, 1, -2]  index 6
-    # [3, 1, 1, 1, 0] index 7
+    # [1, 1, 1, -1, 0]      index 1
+    # [1, 1, 1, 1, 0]       index 2
+    # [1, 1, 1, -3, 0]      index 3
+    # [1, 1, -1, -1, 0]     index 4
+    # [1, 1, 1, -1, -2]     index 5
+    # [1, 1, 1, 1, -2]      index 6
+    # [3, 1, 1, 1, 0]       index 7
     return p_list, a_list, b_list, y_val, x_val
 
 

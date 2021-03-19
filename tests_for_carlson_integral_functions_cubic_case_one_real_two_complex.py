@@ -6,29 +6,29 @@ import time
 def carlson_intermediate_values_cubic_case() -> list:
     # Function which return a list of some intermediate values for given input
     # a1 = 0,3. a4 = 0.9, a5 = 0.4, b1 = 0.2, b4 = -0.3, b5 = 0.5, f = 0.4, g = -0.2, h = 0.1, x = 2.0, y = 0.5
-    m2 = 1.1713435  # index 0
-    lm2 = 1.1496883  # index 1
-    lp2 = 1.3929988  # index 2
-    wp2 = 1.2606479  # index 3
-    u2 = 0.34181141  # index 4
-    w2 = 0.30070030  # index 5
+    m2 = 1.1713435      # index 0
+    lm2 = 1.1496883     # index 1
+    lp2 = 1.3929988     # index 2
+    wp2 = 1.2606479     # index 3
+    u2 = 0.34181141     # index 4
+    w2 = 0.30070030     # index 5
     rcu2w2 = 1.7844272  # index 6
     rcp2q2 = 1.9470611  # index 7
     rfm2lm2lp2 = 0.89978529  # index 8
     rdm2lm2lp2 = 0.67751039  # index 9
-    rjm2lm2lp2wp2 = 0.71986645  # index 10
-    i1c = 3.5991412  # index 11
-    i2c = 1.9453098  # index 12
-    i3c = 4.0022901  # index 13
-    j1c = 0.06573017  # index 14
-    n2c = 6.8301223  # index 15
-    k1c = 0.96438740  # index 16
-    am1m1m1 = -0.88367862  # index 17
-    am111 = -0.14545887  # index 18
-    am111m2 = 1.3179127  # index 19
-    a111 = 0.16859514  # index 20
+    rjm2lm2lp2wp2 = 0.71986645      # index 10
+    i1c = 3.5991412     # index 11
+    i2c = 1.9453098     # index 12
+    i3c = 4.0022901     # index 13
+    j1c = 0.06573017    # index 14
+    n2c = 6.8301223     # index 15
+    k1c = 0.96438740    # index 16
+    am1m1m1 = -0.88367862   # index 17
+    am111 = -0.14545887     # index 18
+    am111m2 = 1.3179127     # index 19
+    a111 = 0.16859514   # index 20
     am311 = -1.1735711  # index 21
-    a311 = 0.22618313  # index 22
+    a311 = 0.22618313   # index 22
     result_list = [m2, lm2, lp2, wp2, u2, w2, rcu2w2, rcp2q2, rfm2lm2lp2, rdm2lm2lp2, rjm2lm2lp2wp2, i1c,
                    i2c, i3c, j1c, n2c, k1c, am1m1m1, am111, am111m2, a111, am311, a311]
     return result_list
@@ -64,7 +64,7 @@ def cubic_cases_test_data() -> tuple:
     b_list = [0.2, 0.0, 0.0, -0.3, 0.5]
     # a_list = [0.3, 0.0, 0.0, 1.0, 0.9]
     # b_list = [0.2, 0.0, 0.0, 0.0, -0.3]
-    kwadrat_list = [0.4, -0.2, 0.1]
+    fgh_list = [0.4, -0.2, 0.1]
     y_val = 0.5
     x_val = 2.0
     p_list = [[-1, -1, -1, 0, 0], [-1, 1, 1, 0, 0], [-1, 1, 1, -2, 0], [1, 1, 1, 0, 0], [-3, 1, 1, 0, 0],
@@ -72,12 +72,12 @@ def cubic_cases_test_data() -> tuple:
     # p_list is a list of lists
     # zero could be skipped but I will leave it to make sure every list has the same length
     # by default we will use p_list[0] = [ -1, -1, -1, 0, 0]
-    # [-1, 1, 1, 0, 0]  index 1
-    # [-1, 1, 1, -2, 0] index 2
-    # [1, 1, 1, 0, 0]    index 3
-    # [-3, 1, 1, 0, 0]    index 4
-    # [3, 1, 1, 0, 0]  index 5
-    return p_list, a_list, b_list, kwadrat_list, y_val, x_val
+    # [-1, 1, 1, 0, 0]      index 1
+    # [-1, 1, 1, -2, 0]     index 2
+    # [1, 1, 1, 0, 0]       index 3
+    # [-3, 1, 1, 0, 0]      index 4
+    # [3, 1, 1, 0, 0]       index 5
+    return p_list, a_list, b_list, fgh_list, y_val, x_val
 
 
 def test_integrals_cubic_case_a_p1_pn(p: list, a: list, b: list, fgh: list, y: float, x: float) -> float:
