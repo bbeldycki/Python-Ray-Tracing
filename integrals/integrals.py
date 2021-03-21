@@ -26,6 +26,41 @@ def compute_a_p1_pn(p: list, a: list, b: list, y: float, x: float) -> float:
     return ax - ay
 
 
+def compute_a_p1_pn_double_quadratic(p: list, a: list, b: list, fgh1: list, fgh2: list, y: float, x: float) -> float:
+    if x < y:
+        raise Exception('Error occurred in function compute_a_p1_pn_double_quadratic. '
+                        'We have situation where x is lower than y. The value of x must be greater than y')
+    fi = [fgh1[0], fgh2[0]]
+    gi = [fgh1[1], fgh2[1]]
+    hi = [fgh1[2], fgh2[2]]
+    ksi = []
+    eta = []
+    # coefficient ksi and eta from equation 2.1
+    for i in range(len(fi)):
+        ksi.append(math.sqrt(fi[i] + gi[i] * x + hi[i] * x * x))
+        eta.append(math.sqrt(fi[i] + gi[i] * y + hi[i] * y * y))
+    ax = 1
+    ay = 1
+    if p[4] != 0:
+        ksi5 = a[4] + b[4] * x
+        eta5 = a[4] + b[4] * y
+        for i in range(len(p)):
+            if i == 2 or i == 3:
+                continue
+            elif i == 4:
+                ax = ax * math.sqrt(ksi5 ** p[i])
+                ay = ay * math.sqrt(eta5 ** p[i])
+            else:
+                ax = ax * ksi[i] ** p[i]
+                ay = ay * eta[i] ** p[i]
+        return ax - ay
+    else:
+        for i in range(2):
+            ax = ax * ksi[i] ** p[i]
+            ay = ay * eta[i] ** p[i]
+        return ax - ay
+
+
 def compute_a_p1_pn_quadratics(p: list, a: list, b: list, fgh: list, y: float, x: float) -> float:
     # Function which computed value of coefficient A from equation 2.6 from different Carlson Papers
     # B.C; Carlson; A Table of Elliptic Integrals: One Quadratic factor
@@ -57,8 +92,28 @@ def compute_a_p1_pn_quadratics(p: list, a: list, b: list, fgh: list, y: float, x
     return ax - ay
 
 
+def compute_alfa_beta_i5(f: list, g: list, h: list, a5: float, b5: float, k: int) -> tuple:
+    # Function which computes coefficients alfa_i5 and beta_i5
+    return 2 * f[k] * b5 - g[k] * a5, g[k] * b5 - 2 * h[k] * a5
+
+
 def compute_cij_value(a: list, b: list, fgh: list, k: int, k1: int) -> float:
     return 2 * b[k] * b[k1] * fgh[0] - fgh[1] * (a[k] * b[k1] + a[k1] * b[k]) + 2 * fgh[2] * a[k] * a[k1]
+
+
+def compute_delta_ij(f: list, g: list, h: list, k: int, l: int) -> float:
+    # Function which computes coefficients delta_ij
+    return 2 * f[k] * h[l] + 2 * f[l] * h[k] - g[k] * g[l]
+
+
+def compute_gamma_i5(f: list, g: list, h: list, a5: float, b5: float, k: int) -> float:
+    # Function which computes coefficients gamma_i5
+    gama = f[k] * b5 * b5 - g[k] * a5 * b5 + h[k] * a5 * a5
+    if gama > 0.0:
+        return gama
+    else:
+        raise Exception('Error occurred during comparison of gamma_i5 in function compute_gamma_i5. '
+                        'Resulting value was negative or zero,but should be greater than zero ')
 
 
 def iteration_loop_for_rc_function(x: float, y: float) -> tuple:
@@ -171,10 +226,11 @@ def rd(x: float, y: float, z: float) -> float:
     sums = 0.0
     fac = 1.0
     # First iteration
-    x, y, z, delx, dely, delz, ave, sums, fac = iteration_loop_for_rd_function(x, y, z, sums, fac)
+    x_temp, y_temp, z_temp, delx, dely, delz, ave, sums, fac = iteration_loop_for_rd_function(x, y, z, sums, fac)
     # Next iterations if needed
     while max(abs(delx), abs(dely), abs(delz)) > 0.05:
-        x, y, z, delx, dely, delz, ave, sums, fac = iteration_loop_for_rd_function(x, y, z, sums, fac)
+        x_temp, y_temp, z_temp, delx, dely, delz, ave, sums, fac = iteration_loop_for_rd_function(x_temp, y_temp,
+                                                                                                  z_temp, sums, fac)
     # We use the following coefficients to compute final integral value
     coef_e2 = delx * dely
     coef_e3 = coef_e2 - delz * delz
@@ -203,10 +259,10 @@ def rf(x: float, y: float, z: float) -> float:
     elif max(x, y, z) > 3e37:
         raise Exception('Error occurred in function rf. One of the arguments was to large.')
     # First iteration
-    x, y, z, delx, dely, delz, ave = iteration_loop_for_rf_function(x, y, z)
+    x_temp, y_temp, z_temp, delx, dely, delz, ave = iteration_loop_for_rf_function(x, y, z)
     # Next iterations if needed
     while max(abs(delx), abs(dely), abs(delz)) > 0.08:
-        x_temp, y_temp, z_temp, delx, dely, delz, ave = iteration_loop_for_rf_function(x, y, z)
+        x_temp, y_temp, z_temp, delx, dely, delz, ave = iteration_loop_for_rf_function(x_temp, y_temp, z_temp)
     # We use the following coefficients to compute final integral value
     coef_e2 = delx * dely - delz * delz
     coef_e3 = delx * dely * delz
@@ -427,7 +483,7 @@ def elliptical_integral_cubic_one_real_and_two_complex_roots(p: list, a: list, b
             return b[3] * k2c / 2.0 / d14 / c442 / 2.0 + (b[0] / d14) ** 2 * (1.0 - r12r13 / r24r34) * i1c
 
 
-def elliptical_integral_quartic_all_roots_real(p: list, a: list, b: list, ffr: float, y: float, x: float) -> float:
+def elliptical_integral_quartic_all_real_roots(p: list, a: list, b: list, ffr: float, y: float, x: float) -> float:
     # Integral computed based on numerical method by B. C; Carlson; A Table of Elliptic Integrals of the Third Kind
     # Mathematics of Computation, Volume 51, Number 183, Pages 267-280, July 1988
     if x < y:
@@ -641,3 +697,134 @@ def elliptical_integral_quartic_two_real_and_two_complex_roots(p: list, a: list,
             return b[4] * b[4] * c442 * i2 / 2.0 / d15 / d45 / c552 + b[0] * b[0] * i1 * \
                    (1 - c112 * b[4] * b[4] / 2.0 / c552 / b[0] / b[0]) \
                    - 2 * b[4] * b[4] / d15 / c552 * compute_a_p1_pn_quadratics(p, a, b, fgh, y, x)
+
+
+def elliptical_integral_quartic_all_complex_roots(p: list, a: list, b: list, fgh1: list, fgh2: list, ffr: float,
+                                                  y: float, x: float) -> float:
+    # Integral computed based on numerical method by B. C; Carlson; A Table of Elliptic Integrals: Two Quadratic Factors
+    # Mathematics of Computation, Volume 59, Number 199, Pages 165-180, July 1992
+    if x < y:
+        raise Exception('Error occurred in function elliptical_integral_quartic_all_complex_roots. '
+                        'We have situation where x is lower than y. The value of x must be greater than y')
+    fi = [fgh1[0], fgh2[0]]
+    gi = [fgh1[1], fgh2[1]]
+    hi = [fgh1[2], fgh2[2]]
+    ksi = []
+    eta = []
+    theta = []
+    # coefficient ksi and eta from equation 2.1
+    for i in range(len(fi)):
+        ksi.append(math.sqrt(fi[i] + gi[i] * x + hi[i] * x * x))
+        eta.append(math.sqrt(fi[i] + gi[i] * y + hi[i] * y * y))
+        theta.append(ksi[i] * ksi[i] + eta[i] * eta[i] - hi[i] * (x - y) ** 2)
+    # coefficients from equation 2.2
+    ksi1p = (gi[0] + 2 * hi[0] * x) / 2.0 / ksi[0]
+    eta1p = (gi[0] + 2 * hi[0] * y) / 2.0 / eta[0]
+    dzeta = []
+    # coefficient dzeta from equation 2.5
+    for i in range(len(fi)):
+        dzeta.append(math.sqrt((ksi[i] + eta[i]) ** 2 - hi[i] * (x - y) ** 2))
+    # coefficient M from equation 2.6
+    u = (ksi[0] * eta[1] + eta[0] * ksi[1]) / (x - y)
+    m = dzeta[0] * dzeta[1] / (x - y)
+    m2 = m * m
+    # coefficients delta_ij and delta from equation 2.7
+    d112 = compute_delta_ij(fi, gi, hi, 0, 0)
+    d222 = compute_delta_ij(fi, gi, hi, 1, 1)
+    d122 = compute_delta_ij(fi, gi, hi, 0, 1)
+    delta = math.sqrt(d122 * d122 - d112 * d222)
+    # coefficients delta_plus/minus and Lm2 and Lp2 from equation 2.8
+    deltap = d122 + delta
+    deltam = d122 - delta
+    lm2 = m2 + deltam
+    lp2 = m2 + deltap
+    # values of RF and RD functions
+    rf_function_value = rf(m2, lm2, lp2)
+    rd_function_value = rd(m2, lm2, lp2)
+    if p[4] == 0:
+        # return the final integral from equation 2.36
+        return 4 * rf_function_value
+    if u == 0.0 or ksi[0] == 0.0 or eta[0] == 0.0:
+        raise Exception('Error occurred in function test_integrals_quartic_case_m2lm2lp2. '
+                        'We have situation where ksi[0] = 0 or eta[0] = 0 or u = 0.0.')
+    # value of coefficient G from equation 2.9
+    gie = 2 * delta * deltap * rd_function_value / 3.0 + delta / 2.0 / u + \
+          (d122 * theta[0] - d112 * theta[1]) / 4.0 / ksi[0] / eta[0] / u
+    # coefficients alpha, beta and gamma from equations 2.11 and 2.12
+    alfa15, beta15 = compute_alfa_beta_i5(fi, gi, hi, a[4], b[4], 0)
+    alfa25, beta25 = compute_alfa_beta_i5(fi, gi, hi, a[4], b[4], 1)
+    gamma1 = compute_gamma_i5(fi, gi, hi, a[4], b[4], 0)
+    gamma2 = compute_gamma_i5(fi, gi, hi, a[4], b[4], 1)
+    if a[4] == 1.0 and b[4] == 0.0:
+        if hi[0] == 0.0:
+            raise Exception('Error occurred in function test_integrals_quartic_case_m2lm2lp2. '
+                            'We have situation where hi[0] = 0.')
+        # coefficients capital lambda and capital sigma from equation 2.23
+        blambda = d112 * hi[1] / hi[0]
+        bsig2 = m2 + blambda
+        # coefficient psi form equation 2.24
+        psi = gi[0] * hi[1] - gi[1] * hi[0]
+        # value of capital x from equation 2.25
+        bix = -1.0 * (ksi1p * ksi[1] + eta1p * eta[1]) / (x - y)
+        # value of capital s from equation 2.18
+        bes = (m2 + d122) / 2.0 - u * u
+        # value of coefficient mu and values of capital t and capital V squared from equation 2.19
+        mu = hi[0] / ksi[0] / eta[0]
+        bet = mu * bes + 2 * hi[0] * hi[1]
+        v2 = mu * mu * (bes * bes + blambda * u * u)
+        # values of b2 and a2 from equation 2.20 and 2.21 respectively
+        b2 = (bes * bes / u / u + blambda) * bsig2 * bsig2
+        a2 = b2 + blambda * (deltap - blambda) * (blambda - deltam)
+        # values of RC and RJ functions for different arguments
+        rca2b2 = rc(a2, b2)
+        rct2v2 = rc(bet * bet, v2)
+        rjm2lm2lp2sig2 = rj(m2, lm2, lp2, bsig2)
+        # values of capital h from equation 2.22
+        beh = d112 * psi * (rjm2lm2lp2sig2 / 3.0 + rca2b2 / 2.0) / hi[0] / hi[0] - bix * rct2v2
+        if p[4] == -2:
+            # return the final integral from equation 2.39
+            return -2 * (b[4] * beh + beta15 * ffr / gamma1)
+        elif p[4] == -4:
+            # coefficient omega from equation 2.10
+            omega = gie - deltap * ffr + ksi1p * ksi[0] - eta1p * eta[0]
+            # return the final integral from equation 2.41
+            return b[4] * (beta15 / gamma1 + beta25 / gamma2) * beh + beta15 * beta15 * ffr / gamma1 / gamma1 + \
+                   b[4] * b[4] * (omega - b[4] * compute_a_p1_pn_double_quadratic(p, a, b, fgh1, fgh2, y, x)) \
+                   / gamma1 / gamma2
+    else:
+        # coefficients capital lambda and capital sigma from equation 2.13
+        blambda = d112 * gamma2 / gamma1
+        bsig2 = m2 + blambda
+        # coefficient psi form equation 2.14
+        psi = (alfa15 * beta25 - alfa25 * beta15) / 2.0
+        # values of ksi5 and eta5 from equation 2.15
+        ksi5 = a[4] + b[4] * x
+        eta5 = a[4] + b[4] * y
+        # value of capital x from equation 2.17
+        bix = (ksi5 * (alfa15 + beta15 * y) * eta[1] / eta[0] + eta5 * (alfa15 + beta15 * x) * ksi[1] / ksi[0]) \
+              / 2.0 / (x - y)
+        # value of capital s from equation 2.18
+        bes = (m2 + d122) / 2.0 - u * u
+        # value of coefficient mu and values of capital t and capital V squared from equation 2.19
+        mu = gamma1 * ksi5 * eta5 / ksi[0] / eta[0]
+        bet = mu * bes + 2 * gamma1 * gamma2
+        v2 = mu * mu * (bes * bes + blambda * u * u)
+        # values of b2 and a2 from equation 2.20 and 2.21 respectively
+        b2 = (bes * bes / u / u + blambda) * bsig2 * bsig2
+        a2 = b2 + blambda * (deltap - blambda) * (blambda - deltam)
+        # values of RC and RJ functions for different arguments
+        rca2b2 = rc(a2, b2)
+        rct2v2 = rc(bet * bet, v2)
+        rjm2lm2lp2sig2 = rj(m2, lm2, lp2, bsig2)
+        # values of capital h from equation 2.22
+        beh = d112 * psi * (rjm2lm2lp2sig2 / 3.0 + rca2b2 / 2.0) / gamma1 / gamma1 - bix * rct2v2
+        if p[4] == -2:
+            # return the final integral from equation 2.39
+            return -2 * (b[4] * beh + beta15 * ffr / gamma1)
+        elif p[4] == -4:
+            # coefficient omega from equation 2.10
+            omega = gie - deltap * ffr + ksi1p * ksi[0] - eta1p * eta[0]
+            # return the final integral from equation 2.41
+            return b[4] * (beta15 / gamma1 + beta25 / gamma2) * beh + beta15 * beta15 * ffr / gamma1 / gamma1 + \
+                   b[4] * b[4] * (omega - b[4] * compute_a_p1_pn_double_quadratic(p, a, b, fgh1, fgh2, y, x)) \
+                   / gamma1 / gamma2
